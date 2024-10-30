@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "order_items")
-public class OrderItems {
+public class Order_Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,16 +16,16 @@ public class OrderItems {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Products product;
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Orders order;
+    private Order order;
 
-    public OrderItems() {
+    public Order_Item() {
     }
 
-    public OrderItems(Long id, int quantity, Products product, Orders order) {
+    public Order_Item(Long id, int quantity, Product product, Order order) {
         this.id = id;
         this.quantity = quantity;
         this.product = product;
@@ -48,19 +48,19 @@ public class OrderItems {
         this.quantity = quantity;
     }
 
-    public Products getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Products product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
-    public Orders getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(Orders order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 }

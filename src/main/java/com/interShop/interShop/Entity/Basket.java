@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cart_items")
-public class CartItems {
+public class Basket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,16 +15,16 @@ public class CartItems {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Products product;
+    private Product product;
 
-    public CartItems() {
+    public Basket() {
     }
 
-    public CartItems(Long id, int quantity, Users user, Products product) {
+    public Basket(Long id, int quantity, User user, Product product) {
         this.id = id;
         this.quantity = quantity;
         this.user = user;
@@ -47,19 +47,19 @@ public class CartItems {
         this.quantity = quantity;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Products getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Products product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 }

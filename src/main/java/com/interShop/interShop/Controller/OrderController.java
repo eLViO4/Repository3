@@ -1,9 +1,8 @@
 package com.interShop.interShop.Controller;
 
-import com.interShop.interShop.Entity.Orders;
+import com.interShop.interShop.Entity.Order;
 import com.interShop.interShop.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +19,22 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<Orders> getAllOrders() {
+    public List<Order> getAllOrders() {
         return orderService.findAllOrders();
     }
 
     @GetMapping("/{id}")
-    public Optional<Orders> getOrderById(@PathVariable Long id) {
+    public Optional<Order> getOrderById(@PathVariable Long id) {
         return orderService.findOrderById(id);
     }
 
     @PostMapping
-    public Orders createOrder(@RequestBody Orders order) {
+    public Order createOrder(@RequestBody Order order) {
         return orderService.saveOrder(order);
     }
 
     @PutMapping
-    public Orders updateOrder(@RequestBody Orders order) {
+    public Order updateOrder(@RequestBody Order order) {
         return orderService.saveOrder(order);
     }
 

@@ -1,6 +1,6 @@
 package com.interShop.interShop.Service;
 
-import com.interShop.interShop.Entity.Products;
+import com.interShop.interShop.Entity.Product;
 import com.interShop.interShop.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,23 +17,23 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Products> getAllProducts() {
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    public Optional<Products> getProductById(Long id) {
+    public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 
-    public Products saveProduct(Products products) {
-        return productRepository.save(products);
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
 
-    public List<Products> getProductsByName(String name) {
+    public List<Product> getProductsByName(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 

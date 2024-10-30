@@ -1,6 +1,6 @@
 package com.interShop.interShop.Service;
 
-import com.interShop.interShop.Entity.Categories;
+import com.interShop.interShop.Entity.Category;
 import com.interShop.interShop.Repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,15 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Categories> getAllCategories() {
+    public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    public Optional<Categories> getCategoryById(Long id) {
+    public Optional<Category> getCategoryById(Long id) {
         return categoryRepository.findById(id);
     }
 
-    public Categories saveCategory(Categories category) {
+    public Category saveCategory(Category category) {
         return categoryRepository.save(category);
     }
 

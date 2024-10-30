@@ -1,8 +1,8 @@
 package com.interShop.interShop.Repository;
 
-import com.interShop.interShop.Entity.Users;
+import com.interShop.interShop.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }

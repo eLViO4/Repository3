@@ -1,6 +1,6 @@
 package com.interShop.interShop.Controller;
 
-import com.interShop.interShop.Entity.Products;
+import com.interShop.interShop.Entity.Product;
 import com.interShop.interShop.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +20,23 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Products> getProducts() {
+    public List<Product> getProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Optional<Products> getProductsById(@PathVariable Long id) {
+    public Optional<Product> getProductsById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
     @PostMapping
-    public Products addProduct(@RequestBody Products products) {
-        return productService.saveProduct(products);
+    public Product addProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
     }
 
     @PutMapping
-    public Products updateProduct(@RequestBody Products products) {
-        return productService.saveProduct(products);
+    public Product updateProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
     }
 
     @DeleteMapping("/{id}")

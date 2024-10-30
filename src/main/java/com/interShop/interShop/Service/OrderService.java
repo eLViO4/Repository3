@@ -1,6 +1,6 @@
 package com.interShop.interShop.Service;
 
-import com.interShop.interShop.Entity.Orders;
+import com.interShop.interShop.Entity.Order;
 import com.interShop.interShop.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,15 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public List<Orders> findAllOrders() {
+    public List<Order> findAllOrders() {
         return orderRepository.findAll();
     }
 
-    public Optional<Orders> findOrderById(Long id) {
+    public Optional<Order> findOrderById(Long id) {
         return orderRepository.findById(id);
     }
 
-    public Orders saveOrder(Orders order) {
+    public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
 

@@ -1,6 +1,6 @@
 package com.interShop.interShop.Controller;
 
-import com.interShop.interShop.Entity.Users;
+import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,22 +20,22 @@ class UserController {
     }
 
     @GetMapping
-    public List<Users> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public Optional<Users> getUserById(@PathVariable Long id) {
+    public Optional<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @PostMapping
-    public Users createUser(@RequestBody Users user) {
+    public User createUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
     @PutMapping
-    public Users updateUser(@RequestBody Users user) {
+    public User updateUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
