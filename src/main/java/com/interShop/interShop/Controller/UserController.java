@@ -1,5 +1,6 @@
 package com.interShop.interShop.Controller;
 
+import com.interShop.interShop.Entity.Basket;
 import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,9 @@ class UserController {
         return userService.getUserById(id);
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
-    }
-
-    @PutMapping
-    public User updateUser(@RequestBody User user) {
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        user.setId(id);
         return userService.saveUser(user);
     }
 
@@ -44,4 +41,18 @@ class UserController {
         userService.deleteUser(id);
     }
 
+    @PostMapping("/register")
+    public void registerUser(@RequestBody User user) {
+        userService.registerUser(user);
+    }
+
+    @PostMapping("/login")
+    public User login(@RequestParam String email, @RequestParam String password) {
+        return userService.login(email, password);
+    }
+
+    @GetMapping("/{id}basket")
+    public Basket getBasket(@PathVariable Long id) {
+        return userService.getUserBasket(id);
+    }
 }

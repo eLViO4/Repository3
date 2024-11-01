@@ -44,9 +44,18 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
+    @GetMapping("/{productId}/isAvailable")
+    public boolean isProductAvailable(@PathVariable Long productId) {
+        return productService.isProductAvailable(productId);
+    }
+
     @GetMapping("/search")
     public List<Product> searchProducts(@RequestParam String name) {
         return productService.getProductsByName(name);
     }
 
+    @GetMapping("/filterByPrice")
+    public List<Product> filterByPrice(@RequestParam double minPrice, @RequestParam double maxPrice) {
+        return productService.filterProductsByPrice(minPrice,maxPrice);
+    }
 }

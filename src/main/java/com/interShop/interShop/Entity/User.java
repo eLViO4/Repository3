@@ -20,6 +20,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @OneToOne
+    private Basket basket;
+
     public User() {
     }
 
@@ -59,6 +62,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Basket getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Basket basket) {
+        this.basket = basket;
     }
 
     @Override

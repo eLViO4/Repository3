@@ -1,16 +1,11 @@
 package com.interShop.interShop.Controller;
 
 import com.interShop.interShop.Entity.Basket;
-import com.interShop.interShop.Entity.Product;
-import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Service.BasketService;
 import com.interShop.interShop.Service.ProductService;
 import com.interShop.interShop.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/intershop/basket")
@@ -26,37 +21,39 @@ public class BasketController {
         this.userService = userService;
     }
 
-
-
     @PostMapping
     public Basket createBasket(@RequestBody Basket basket) {
         return basketService.saveBasket(basket);
     }
 
     @PostMapping("/add")
-    public Basket addToBasket(@RequestParam Long productId, @RequestParam Long userId, @RequestParam int quantity) {
-        Product product = productService.getProductById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
-        User user = userService.getUserById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-        Basket basket = new Basket();
-        basket.setProduct(product);
-        basket.setUser(user);
-        basket.setQuantity(quantity);
-        return basketService.saveBasket(basket);
+    public Basket addProductToBasket(@RequestParam Long productId, @RequestParam Long userId, @RequestParam int quantity) {
+        return basketService.addProductToBasket(productId, userId, quantity);
     }
 
-    /*@DeleteMapping("/removeProduct")
-    public String removeProductFromBasket(@RequestParam Long productId, @RequestParam Long userId) {
+    @DeleteMapping("/remove/{productId}")
+    public void removeProductFromBasket(@PathVariable Long productId, @RequestParam Long userId) {
         basketService.removeProductFromBasket(productId, userId);
-        return "Product removed from basket successfully.";
-    }
-*/
-
-    @PutMapping
-    public Basket updateBasket(@RequestBody Basket basket) {
-        return basketService.saveBasket(basket);
     }
 
+    @PutMapping("/updateQuantity/{productId}")
+    public void updateQuantity(@RequestParam Long userId, @PathVariable Long productId, @RequestParam int quantity) {
+        basketService.updateProductQuantity(userId, productId, quantity);
+    }
+
+    @GetMapping("/user/{userId}")
+    public Basket getBasketByUserId(@PathVariable Long userId) {
+        return basketService.getBasketByUserId(userId);
+    }
+
+    @DeleteMapping("/clear")
+    public void clearBasket(@RequestParam Long userId) {
+        basketService.clearBasket(userId);
+    }
+
+    @GetMapping("/total")
+    public double getBasketTotal(@RequestParam Long userId) {
+        return basketService.calculateBasketTotal(userId);
+    }
 
 }

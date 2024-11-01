@@ -1,7 +1,9 @@
 package com.interShop.interShop.Service;
 
 import com.interShop.interShop.Entity.Category;
+import com.interShop.interShop.Entity.Product;
 import com.interShop.interShop.Repository.CategoryRepository;
+import com.interShop.interShop.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,12 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
 
     // Category CRUD
@@ -37,5 +41,7 @@ public class CategoryService {
     }
 
     // Additional
-    // List<Product> getProductsByCategory(Long categoryId);
+    public List<Product> getProductsByCategory(Long categoryId){
+         return productRepository.findByCategoryId(categoryId);
+     }
 }

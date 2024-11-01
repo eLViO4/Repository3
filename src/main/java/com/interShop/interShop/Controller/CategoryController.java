@@ -1,5 +1,6 @@
 package com.interShop.interShop.Controller;
 
+import com.interShop.interShop.Entity.Product;
 import com.interShop.interShop.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.interShop.interShop.Entity.Category;
@@ -42,5 +43,10 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
+    }
+
+    @GetMapping("/{categoryId}/products")
+    public List<Product> getProductsByCategory(@PathVariable Long categoryId) {
+        return categoryService.getProductsByCategory(categoryId);
     }
 }
