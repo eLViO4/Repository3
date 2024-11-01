@@ -16,6 +16,8 @@ public class Product {
     @Column(name = "price")
     private double price;
 
+    private boolean iaAvailable;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -69,5 +71,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public boolean isIaAvailable() {
+        return iaAvailable;
+    }
+
+    public void setIaAvailable(boolean iaAvailable) {
+        this.iaAvailable = iaAvailable;
     }
 }

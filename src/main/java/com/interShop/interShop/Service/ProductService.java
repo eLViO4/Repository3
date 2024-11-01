@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -35,13 +36,21 @@ public class ProductService {
     }
 
     // Search and Filtering
-   // List<Product> filterProductsByPrice(double minPrice, double maxPrice);
+    public List<Product> filterProductsByPrice(double minPrice, double maxPrice) {
+        List<Product> allProducts = productRepository.findAll();
+        return allProducts.stream()
+                .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
+                .collect(Collectors.toList());
+    }
     public List<Product> getProductsByName(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
     // Inventory Management
-  //  boolean isProductAvailable(Long productId);
+    public boolean isProductAvailable(Long productId) {
+        Product product = productRepository.findById(productId).orElse(null);
+        return product!=null && product.isIaAvailable();
+    }
 
 
 }
