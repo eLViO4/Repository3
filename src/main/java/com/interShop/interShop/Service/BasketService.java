@@ -1,6 +1,7 @@
 package com.interShop.interShop.Service;
 
 import com.interShop.interShop.Entity.Basket;
+import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Repository.BasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,19 +18,23 @@ public class BasketService {
         this.basketRepository = basketRepository;
     }
 
-    public List<Basket> findAllBaskets() {
-        return basketRepository.findAll();
-    }
+    // Basket Management
+  //  Basket getBasketByUserId(Long userId);
+  //  void addProductToBasket(Long userId, Long productId, int quantity);
+  //  void updateProductQuantity(Long userId, Long productId, int newQuantity);
 
-    public Optional<Basket> findBasketById(Long id) {
-        return basketRepository.findById(id);
-    }
+   /* public void removeProductFromBasket(Long productId, Long userId) {
+            basketRepository.deleteProductById(productId, userId);
+        }*/
+
+  //  void clearBasket(Long userId);
 
     public Basket saveBasket(Basket basket) {
         return basketRepository.save(basket);
     }
 
-    public void deleteBasketById(Long id) {
-        basketRepository.deleteById(id);
-    }
+
+
+    // Basket Summary
+   // double calculateBasketTotal(Long userId);
 }

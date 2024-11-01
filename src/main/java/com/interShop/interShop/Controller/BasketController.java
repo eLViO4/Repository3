@@ -26,15 +26,7 @@ public class BasketController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<Basket> getAllBaskets() {
-        return basketService.findAllBaskets();
-    }
 
-    @GetMapping("/{id}")
-    public Optional<Basket> getBasketById(@PathVariable Long id) {
-        return basketService.findBasketById(id);
-    }
 
     @PostMapping
     public Basket createBasket(@RequestBody Basket basket) {
@@ -47,18 +39,24 @@ public class BasketController {
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
         User user = userService.getUserById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-        Basket basket = new Basket(null, quantity, user, product);
+        Basket basket = new Basket();
+        basket.setProduct(product);
+        basket.setUser(user);
+        basket.setQuantity(quantity);
         return basketService.saveBasket(basket);
     }
+
+    /*@DeleteMapping("/removeProduct")
+    public String removeProductFromBasket(@RequestParam Long productId, @RequestParam Long userId) {
+        basketService.removeProductFromBasket(productId, userId);
+        return "Product removed from basket successfully.";
+    }
+*/
 
     @PutMapping
     public Basket updateBasket(@RequestBody Basket basket) {
         return basketService.saveBasket(basket);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteBasket(@PathVariable Long id) {
-        basketService.deleteBasketById(id);
-    }
 
 }

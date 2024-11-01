@@ -22,6 +22,10 @@ public class Order {
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
+    /*@Column(name = "status")
+    private String status;*/
+
+
     public Order() {
     }
 
@@ -31,6 +35,14 @@ public class Order {
         this.price = price;
         this.orderDate = orderDate;
     }
+
+    /*public Order(Long id, User user, double price, LocalDateTime orderDate, String status) {
+        this.id = id;
+        this.user = user;
+        this.price = price;
+        this.orderDate = orderDate;
+        this.status = status;
+    }*/
 
     public Long getId() {
         return id;
@@ -63,4 +75,13 @@ public class Order {
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
+
+    /*public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }*/
 }
+

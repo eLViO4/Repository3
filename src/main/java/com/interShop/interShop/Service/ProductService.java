@@ -17,6 +17,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    // Product CRUD
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -33,8 +34,14 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    // Search and Filtering
+   // List<Product> filterProductsByPrice(double minPrice, double maxPrice);
     public List<Product> getProductsByName(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
+
+    // Inventory Management
+  //  boolean isProductAvailable(Long productId);
+
 
 }

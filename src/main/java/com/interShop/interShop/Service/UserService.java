@@ -18,6 +18,12 @@ public class UserService {
         this.repository = repository;
     }
 
+    // Authentication
+    // void registerUser(User user);
+    // User login(String email, String password);
+    //void logout(Long userId);
+
+    // Profile management
     public List<User> getAllUsers() {
         return repository.findAll();
     }
@@ -33,4 +39,7 @@ public class UserService {
     public void deleteUser(Long id) {
         repository.deleteById(id);
     }
+
+
+
 }

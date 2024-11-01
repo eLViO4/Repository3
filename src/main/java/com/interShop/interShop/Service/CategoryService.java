@@ -18,6 +18,8 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    // Category CRUD
+
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
@@ -33,4 +35,7 @@ public class CategoryService {
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
+
+    // Additional
+    // List<Product> getProductsByCategory(Long categoryId);
 }
