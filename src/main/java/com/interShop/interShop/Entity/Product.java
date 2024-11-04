@@ -18,6 +18,8 @@ public class Product {
     @Column(name = "is_available")
     private boolean iaAvailable;
 
+    private boolean iaAvailable;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
