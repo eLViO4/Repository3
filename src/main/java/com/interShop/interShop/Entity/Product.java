@@ -16,20 +16,19 @@ public class Product {
     @Column(name = "price")
     private double price;
     @Column(name = "is_available")
-    private boolean iaAvailable;
+    private boolean isAvailable;
 
-    private boolean iaAvailable;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Product(Long id, String name, String description, double price, boolean iaAvailable, Category category) {
+    public Product(Long id, String name, String description, double price, boolean isAvailable, Category category) {
         Id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.iaAvailable = iaAvailable;
+        this.isAvailable = isAvailable;
         this.category = category;
     }
 
@@ -76,11 +75,11 @@ public class Product {
         this.category = category;
     }
 
-    public boolean isIaAvailable() {
-        return iaAvailable;
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
-    public void setIaAvailable(boolean iaAvailable) {
-        this.iaAvailable = iaAvailable;
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

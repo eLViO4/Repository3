@@ -49,7 +49,7 @@ public class ProductService {
     // Inventory Management
     public boolean isProductAvailable(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
-        return product!=null && product.isIaAvailable();
+        return product!=null && product.isAvailable();
     }
 
 
