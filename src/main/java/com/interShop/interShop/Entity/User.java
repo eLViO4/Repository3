@@ -20,7 +20,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "basket_id")
     private Basket basket;
 
     public User() {

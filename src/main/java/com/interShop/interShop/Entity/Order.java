@@ -3,6 +3,8 @@ package com.interShop.interShop.Entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -25,15 +27,19 @@ public class Order {
     @Column(name = "status")
     private String status;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<Order_Item> orderItems = new ArrayList<>();
+
     public Order() {
     }
 
-    public Order(Long id, User user, double price, LocalDateTime orderDate, String status) {
+    public Order(Long id, User user, double price, LocalDateTime orderDate, String status, List<Order_Item> orderItems) {
         this.id = id;
         this.user = user;
         this.price = price;
         this.orderDate = orderDate;
         this.status = status;
+        this.orderItems = orderItems;
     }
 
     public Long getId() {
@@ -71,8 +77,17 @@ public class Order {
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<Order_Item> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<Order_Item> orderItems) {
+        this.orderItems = orderItems;
     }
 }
 

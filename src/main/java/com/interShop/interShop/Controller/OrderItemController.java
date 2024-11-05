@@ -6,7 +6,7 @@ import com.interShop.interShop.Entity.Order_Item;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/intershop/order_item")
@@ -18,29 +18,18 @@ public class OrderItemController {
         this.orderItemService = orderItemService;
     }
 
-    @GetMapping
-    public List<Order_Item> getAllOrderItems() {
-        return orderItemService.findAllOrderItems();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Order_Item> getOrderItemById(@PathVariable Long id) {
-        return orderItemService.findOrderItemById(id);
-    }
-
     @PostMapping
     public Order_Item createOrderItem(@RequestBody Order_Item orderItem) {
         return orderItemService.saveOrderItem(orderItem);
     }
 
-    @PutMapping
-    public Order_Item updateOrderItem(@RequestBody Order_Item orderItem) {
-        return orderItemService.saveOrderItem(orderItem);
+    @GetMapping("/order/{orderId}")
+    public List<Order_Item> getOrderItemsByOrderId(@PathVariable Long orderId) {
+        return orderItemService.getOrderItemsByOrderId(orderId);
     }
 
     @DeleteMapping("/{id}")
     public void deleteOrderItem(@PathVariable Long id) {
         orderItemService.deleteOrderItemById(id);
     }
-
 }

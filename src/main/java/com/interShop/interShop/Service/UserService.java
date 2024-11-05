@@ -29,6 +29,9 @@ public class UserService {
         if (repository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email is already registered");
         }
+        Basket newBasket = new Basket();
+        user.setBasket(newBasket);
+        newBasket.setUser(user);
         repository.save(user);
     }
 

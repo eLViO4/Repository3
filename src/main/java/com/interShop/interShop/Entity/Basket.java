@@ -13,8 +13,8 @@ public class Basket {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "basket", cascade = CascadeType.ALL)
+   // @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne

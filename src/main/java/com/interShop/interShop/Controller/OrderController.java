@@ -5,7 +5,6 @@ import com.interShop.interShop.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,29 +17,25 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.findAllOrders();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Order> getOrderById(@PathVariable Long id) {
-        return orderService.findOrderById(id);
-    }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return orderService.saveOrder(order);
+    public Order createOrder(@RequestParam Long userId) {
+        return orderService.createOrder(userId);
     }
 
-    @PutMapping
-    public Order updateOrder(@RequestBody Order order) {
-        return orderService.saveOrder(order);
+    @GetMapping("/user/{userId}")
+    public Order getOrderByUserId(@PathVariable Long userId) {
+        return orderService.getOrderByUserId(userId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long id) {
-        orderService.deleteOrderById(id);
+    @GetMapping("/status/{orderId}")
+    public String getOrderStatus(@PathVariable Long orderId) {
+        return orderService.getOrderStatus(orderId);
+    }
+
+    @PutMapping("/updateStatus/{orderId}")
+    public Order updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
+        return orderService.updateOrderStatus(orderId, status);
     }
 
 }
