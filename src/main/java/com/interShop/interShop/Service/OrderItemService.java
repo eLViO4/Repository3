@@ -29,4 +29,11 @@ public class OrderItemService {
     public void deleteOrderItemById(Long id) {
         orderItemRepository.deleteById(id);
     }
+
+    public void updateQuantity(Long orderId, Long productId, Integer quantity) {
+        Order_Item orderItem = orderItemRepository.findByOrder_IdAndProduct_Id(orderId, productId)
+                .orElseThrow(() -> new IllegalArgumentException("Order item not found for this order and product"));
+        orderItem.setQuantity(quantity);
+        orderItemRepository.save(orderItem);
+    }
 }

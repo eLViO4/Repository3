@@ -32,4 +32,9 @@ public class OrderItemController {
     public void deleteOrderItem(@PathVariable Long id) {
         orderItemService.deleteOrderItemById(id);
     }
+
+    @PutMapping("/updateQuantity/order/{orderId}/product/{productId}")
+    public void updateQuantity(@PathVariable Long orderId, @PathVariable Long productId, @RequestParam int quantity) {
+        orderItemService.updateQuantity(orderId, productId, quantity);
+    }
 }
