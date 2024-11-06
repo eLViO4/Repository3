@@ -1,5 +1,6 @@
 package com.interShop.interShop.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 
@@ -22,6 +23,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id")
+    @JsonBackReference
     private Basket basket;
 
     public User() {

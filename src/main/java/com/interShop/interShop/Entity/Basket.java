@@ -1,5 +1,6 @@
 package com.interShop.interShop.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,7 @@ public class Basket {
 
     @OneToOne(mappedBy = "basket", cascade = CascadeType.ALL)
    // @JoinColumn(name = "user_id")
+    @JsonManagedReference
     private User user;
 
     @ManyToOne

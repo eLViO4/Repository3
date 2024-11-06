@@ -20,7 +20,7 @@ class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -51,7 +51,7 @@ class UserController {
         return userService.login(email, password);
     }
 
-    @GetMapping("/{id}basket")
+    @GetMapping("/{id}/basket")
     public Basket getBasket(@PathVariable Long id) {
         return userService.getUserBasket(id);
     }

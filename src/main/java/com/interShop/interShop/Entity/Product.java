@@ -1,5 +1,6 @@
 package com.interShop.interShop.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +22,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     public Product(Long id, String name, String description, double price, boolean isAvailable, Category category) {
