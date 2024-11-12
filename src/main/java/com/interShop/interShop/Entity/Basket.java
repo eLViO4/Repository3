@@ -14,10 +14,11 @@ public class Basket {
     @Column(name = "quantity")
     private int quantity;
 
-    @OneToOne(mappedBy = "basket", cascade = CascadeType.ALL)
-   // @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     @JsonManagedReference
     private User user;
+
 
     @ManyToOne
     @JoinColumn(name = "product_id")

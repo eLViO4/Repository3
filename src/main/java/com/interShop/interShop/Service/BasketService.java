@@ -4,6 +4,7 @@ import com.interShop.interShop.Entity.Basket;
 import com.interShop.interShop.Entity.Product;
 import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Repository.BasketRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +41,17 @@ public class BasketService {
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
         User user = userService.getUserById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-        Basket basket = new Basket();
+        Basket basket = basketRepository.findByUser_Id(userId);
+        if (basket == null) {
+            throw new RuntimeException("User does not have a basket");
+        }
+
         basket.setProduct(product);
-        basket.setUser(user);
-        basket.setQuantity(quantity);
+        basket.setQuantity(basket.getQuantity() + quantity);
         return basketRepository.save(basket);
     }
 
+    @Transactional
     public void removeProductFromBasket(Long productId, Long userId) {
         basketRepository.deleteByUserIdAndProductId(userId, productId);
     }
