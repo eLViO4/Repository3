@@ -3,11 +3,13 @@ package com.interShop.interShop.Service;
 import com.interShop.interShop.Entity.Basket;
 import com.interShop.interShop.Entity.BasketProduct;
 import com.interShop.interShop.Entity.Product;
+import com.interShop.interShop.Repository.BasketProductRepository;
 import com.interShop.interShop.Repository.BasketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,25 +17,42 @@ public class BasketService {
     private final BasketRepository basketRepository;
     private final ProductService productService;
     private final UserService userService;
+    private final BasketProductRepository basketProductRepository;
 
     @Autowired
-    public BasketService(BasketRepository basketRepository, ProductService productService, UserService userService) {
+    public BasketService(BasketRepository basketRepository, ProductService productService, UserService userService, BasketProductRepository basketProductRepository) {
         this.basketRepository = basketRepository;
         this.productService = productService;
         this.userService = userService;
+        this.basketProductRepository = basketProductRepository;
     }
 
     // Basket
-
     public Basket saveBasket(Basket basket) {
         return basketRepository.save(basket);
     }
 
     // Basket Management
 
+
     public Basket getBasketByUserId(Long userId) {
-        return basketRepository.findByUser_Id(userId);
+        Basket basket = basketRepository.findByUser_Id(userId);
+
+        if (basket == null) {
+            throw new RuntimeException("Basket not found for user with ID " + userId);
+        }
+        return basket;
     }
+
+    public List<BasketProduct> getUserBasket(Long userId) {
+        Basket basket = basketRepository.findByUser_Id(userId);
+        if (basket == null) {
+            throw new RuntimeException("Basket not found for user with ID " + userId);
+        }
+        return basket.getProducts();
+
+    }
+
 
     public void addProductToBasket(Long basketId, Long productId, int quantity) {
         Basket basket = basketRepository.findById(basketId)
@@ -61,21 +80,19 @@ public class BasketService {
 
 
     @Transactional
-    public void removeProductFromBasket(Long userId, Long productId) {
-        Basket basket = getBasketByUserId(userId);
-
-        Optional<BasketProduct> productToRemove = basket.getProducts().stream()
-                .filter(basketProduct -> basketProduct.getProduct().getId().equals(productId))
-                .findFirst();
+    public void removeProductFromBasket(Long basketId, Long productId) {
+        Basket basket = basketRepository.findById(basketId)
+                .orElseThrow(() -> new RuntimeException("Basket not found"));
+        Product product = productService.getProductById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        Optional<BasketProduct> productToRemove = basketProductRepository.findByBasket_IdAndProduct_Id(basketId, productId);
 
         if (productToRemove.isPresent()) {
-            basket.getProducts().remove(productToRemove.get());
-            basketRepository.save(basket);
+            basketProductRepository.delete(productToRemove.get());
         } else {
             throw new RuntimeException("Product not found in basket");
         }
     }
-
 
     public void updateProductQuantity(Long userId, Long productId, int newQuantity) {
         Basket basket = getBasketByUserId(userId);
@@ -87,8 +104,10 @@ public class BasketService {
     }
 
     @Transactional
-    public void clearBasket(Long userId) {
-        Basket basket = getBasketByUserId(userId);
+    public void clearBasket(Long basketId) {
+        Basket basket = basketRepository.findById(basketId)
+                .orElseThrow(() -> new RuntimeException("Basket not found"));
+        basketProductRepository.deleteByBasket_Id(basketId);
         basket.getProducts().clear();
         basketRepository.save(basket);
     }

@@ -12,9 +12,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .anyRequest().permitAll() // Allow all requests without authentication
+                        .anyRequest().permitAll()
                 )
-                .csrf(csrf -> csrf.disable()); // Disable CSRF protection
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

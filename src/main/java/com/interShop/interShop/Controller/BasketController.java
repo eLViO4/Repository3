@@ -1,11 +1,14 @@
 package com.interShop.interShop.Controller;
 
 import com.interShop.interShop.Entity.Basket;
+import com.interShop.interShop.Entity.BasketProduct;
 import com.interShop.interShop.Service.BasketService;
 import com.interShop.interShop.Service.ProductService;
 import com.interShop.interShop.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/intershop/basket")
@@ -31,9 +34,9 @@ public class BasketController {
         basketService.addProductToBasket(userId, productId, quantity);
     }
 
-    @DeleteMapping("/remove/{userId}")
-    public void removeProductFromBasket(@PathVariable Long userId, @RequestParam Long productId) {
-        basketService.removeProductFromBasket(userId, productId);
+    @DeleteMapping("/remove/{basketId}")
+    public void removeProductFromBasket(@PathVariable Long basketId, @RequestParam Long productId) {
+        basketService.removeProductFromBasket(basketId, productId);
     }
 
     @PutMapping("/updateQuantity/{userId}")
@@ -42,8 +45,8 @@ public class BasketController {
     }
 
     @GetMapping("/user/{userId}")
-    public Basket getBasketByUserId(@PathVariable Long userId) {
-        return basketService.getBasketByUserId(userId);
+    public List<BasketProduct> getBasketByUserId(@PathVariable Long userId) {
+        return basketService.getUserBasket(userId);
     }
 
     @DeleteMapping("/clear/{userId}")
