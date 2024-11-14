@@ -9,7 +9,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "description")
@@ -26,7 +26,7 @@ public class Product {
     private Category category;
 
     public Product(Long id, String name, String description, double price, boolean isAvailable, Category category) {
-        Id = id;
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -38,11 +38,11 @@ public class Product {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {

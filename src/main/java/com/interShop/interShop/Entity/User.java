@@ -1,6 +1,8 @@
 package com.interShop.interShop.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 
@@ -25,7 +27,6 @@ public class User {
     @JoinColumn(name = "basket_id")
     @JsonBackReference
     private Basket basket;
-
 
     public User() {
     }

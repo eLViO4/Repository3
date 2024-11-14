@@ -26,19 +26,19 @@ public class BasketController {
         return basketService.saveBasket(basket);
     }
 
-    @PostMapping("/add")
-    public Basket addProductToBasket(@RequestParam Long productId, @RequestParam Long userId, @RequestParam int quantity) {
-        return basketService.addProductToBasket(productId, userId, quantity);
+    @PostMapping("/add/{userId}")
+    public void addProductToBasket(@PathVariable Long userId, @RequestParam Long productId, @RequestParam int quantity) {
+        basketService.addProductToBasket(userId, productId, quantity);
     }
 
-    @DeleteMapping("/remove/{productId}")
-    public void removeProductFromBasket(@PathVariable Long productId, @RequestParam Long userId) {
-        basketService.removeProductFromBasket(productId, userId);
+    @DeleteMapping("/remove/{userId}")
+    public void removeProductFromBasket(@PathVariable Long userId, @RequestParam Long productId) {
+        basketService.removeProductFromBasket(userId, productId);
     }
 
-    @PutMapping("/updateQuantity/{productId}")
-    public void updateQuantity(@RequestParam Long userId, @PathVariable Long productId, @RequestParam int quantity) {
-        basketService.updateProductQuantity(userId, productId, quantity);
+    @PutMapping("/updateQuantity/{userId}")
+    public void updateProductQuantity(@PathVariable Long userId, @RequestParam Long productId, @RequestParam int newQuantity) {
+        basketService.updateProductQuantity(userId, productId, newQuantity);
     }
 
     @GetMapping("/user/{userId}")
@@ -46,14 +46,15 @@ public class BasketController {
         return basketService.getBasketByUserId(userId);
     }
 
-    @DeleteMapping("/clear")
-    public void clearBasket(@RequestParam Long userId) {
+    @DeleteMapping("/clear/{userId}")
+    public void clearBasket(@PathVariable Long userId) {
         basketService.clearBasket(userId);
     }
 
-    @GetMapping("/total")
-    public double getBasketTotal(@RequestParam Long userId) {
+    @GetMapping("/total/{userId}")
+    public double calculateBasketTotal(@PathVariable Long userId) {
         return basketService.calculateBasketTotal(userId);
     }
+
 
 }

@@ -1,14 +1,13 @@
 package com.interShop.interShop.Service;
 
 import com.interShop.interShop.Entity.Basket;
+import com.interShop.interShop.Entity.BasketProduct;
 import com.interShop.interShop.Entity.Product;
-import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Repository.BasketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,50 +35,70 @@ public class BasketService {
         return basketRepository.findByUser_Id(userId);
     }
 
-    public Basket addProductToBasket(Long productId, Long userId, int quantity) {
+    public void addProductToBasket(Long basketId, Long productId, int quantity) {
+        Basket basket = basketRepository.findById(basketId)
+                .orElseThrow(() -> new RuntimeException("Basket not found"));
+
         Product product = productService.getProductById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
-        User user = userService.getUserById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-        Basket basket = basketRepository.findByUser_Id(userId);
-        if (basket == null) {
-            throw new RuntimeException("User does not have a basket");
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Optional<BasketProduct> existingProduct = basket.getProducts().stream()
+                .filter(basketProduct -> basketProduct.getProduct().equals(product))
+                .findFirst();
+
+        if (existingProduct.isPresent()) {
+            BasketProduct basketProduct = existingProduct.get();
+            basketProduct.setQuantity(basketProduct.getQuantity() + quantity);
+        } else {
+            BasketProduct newBasketProduct = new BasketProduct();
+            newBasketProduct.setProduct(product);
+            newBasketProduct.setQuantity(quantity);
+            newBasketProduct.setBasket(basket);
+            basket.getProducts().add(newBasketProduct);
         }
-
-        basket.setProduct(product);
-        basket.setQuantity(basket.getQuantity() + quantity);
-        return basketRepository.save(basket);
-    }
-
-    @Transactional
-    public void removeProductFromBasket(Long productId, Long userId) {
-        basketRepository.deleteByUserIdAndProductId(userId, productId);
-    }
-
-    public void updateProductQuantity(Long userId, Long productId, int newQuantity) {
-        Basket basket = getBasketByUserId(userId);
-        if (!basket.getProduct().getId().equals(productId)) {
-            throw new RuntimeException("Product not found in the basket for this user : " + userId);
-        }
-        basket.setQuantity(newQuantity);
         basketRepository.save(basket);
     }
 
-    public void clearBasket(Long userId) {
+
+    @Transactional
+    public void removeProductFromBasket(Long userId, Long productId) {
         Basket basket = getBasketByUserId(userId);
-        if (basket.getQuantity() > 0) {
-            basket.setQuantity(0);
+
+        Optional<BasketProduct> productToRemove = basket.getProducts().stream()
+                .filter(basketProduct -> basketProduct.getProduct().getId().equals(productId))
+                .findFirst();
+
+        if (productToRemove.isPresent()) {
+            basket.getProducts().remove(productToRemove.get());
             basketRepository.save(basket);
+        } else {
+            throw new RuntimeException("Product not found in basket");
         }
     }
 
-    // Basket Summary
 
+    public void updateProductQuantity(Long userId, Long productId, int newQuantity) {
+        Basket basket = getBasketByUserId(userId);
+        basket.getProducts().stream()
+                .filter(basketProduct -> basketProduct.getProduct().getId().equals(productId))
+                .findFirst()
+                .ifPresent(basketProduct -> basketProduct.setQuantity(newQuantity));
+        basketRepository.save(basket);
+    }
+
+    @Transactional
+    public void clearBasket(Long userId) {
+        Basket basket = getBasketByUserId(userId);
+        basket.getProducts().clear();
+        basketRepository.save(basket);
+    }
+
+
+    // Basket Summary
     public double calculateBasketTotal(Long userId) {
-        Basket basket = basketRepository.findByUser_Id(userId);
-        if (basket == null || basket.getQuantity() == 0) {
-            return 0;
-        }
-        return basket.getQuantity() * basket.getProduct().getPrice();
+        Basket basket = getBasketByUserId(userId);
+        return basket.getProducts().stream()
+                .mapToDouble(basketProduct -> basketProduct.getProduct().getPrice() * basketProduct.getQuantity())
+                .sum();
     }
 }

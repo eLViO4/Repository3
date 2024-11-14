@@ -31,10 +31,6 @@ public class OrderService {
     public Order createOrder(Long userId) {
         Basket basket = basketService.getBasketByUserId(userId);
 
-        if (basket == null || basket.getQuantity() == 0) {
-            throw new RuntimeException("Корзина пользователя пуста");
-        }
-
         Order order = new Order();
         order.setUser(basket.getUser());
         order.setOrderDate(LocalDateTime.now());
@@ -45,8 +41,8 @@ public class OrderService {
 
         Order_Item orderItem = new Order_Item();
         orderItem.setOrder(order);
-        orderItem.setProduct(basket.getProduct());
-        orderItem.setQuantity(basket.getQuantity());
+      //  orderItem.setProduct(basket.getProduct());
+      //  orderItem.setQuantity(basket.getQuantity());
 
         order.getOrderItems().add(orderItem);
 

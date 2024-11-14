@@ -1,7 +1,10 @@
 package com.interShop.interShop.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.*;
 
 @Entity
 @Table(name = "cart_items")
@@ -11,27 +14,23 @@ public class Basket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "quantity")
-    private int quantity;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonManagedReference
     private User user;
 
+    @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<BasketProduct> products = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
 
     public Basket() {
     }
 
-    public Basket(Long id, int quantity, User user, Product product) {
+    public Basket(Long id, User user, List<BasketProduct> products) {
         this.id = id;
-        this.quantity = quantity;
         this.user = user;
-        this.product = product;
+        this.products = products;
     }
 
     public Long getId() {
@@ -42,13 +41,6 @@ public class Basket {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public User getUser() {
         return user;
@@ -58,11 +50,11 @@ public class Basket {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<BasketProduct> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(List<BasketProduct> products) {
+        this.products = products;
     }
 }
