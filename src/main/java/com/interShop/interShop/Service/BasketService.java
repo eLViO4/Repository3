@@ -32,14 +32,14 @@ public class BasketService {
         return basketRepository.save(basket);
     }
 
-    // Basket Management
 
+    // Basket Management
 
     public Basket getBasketByUserId(Long userId) {
         Basket basket = basketRepository.findByUser_Id(userId);
 
         if (basket == null) {
-            throw new RuntimeException("Basket not found for user with ID " + userId);
+            throw new RuntimeException("Корзина не найдена для пользователя с ID " + userId);
         }
         return basket;
     }
@@ -47,12 +47,10 @@ public class BasketService {
     public List<BasketProduct> getUserBasket(Long userId) {
         Basket basket = basketRepository.findByUser_Id(userId);
         if (basket == null) {
-            throw new RuntimeException("Basket not found for user with ID " + userId);
+            throw new RuntimeException("Корзина не найдена для пользователя с ID " + userId);
         }
         return basket.getProducts();
-
     }
-
 
     public void addProductToBasket(Long basketId, Long productId, int quantity) {
         Basket basket = basketRepository.findById(basketId)
@@ -114,6 +112,7 @@ public class BasketService {
 
 
     // Basket Summary
+
     public double calculateBasketTotal(Long userId) {
         Basket basket = getBasketByUserId(userId);
         return basket.getProducts().stream()

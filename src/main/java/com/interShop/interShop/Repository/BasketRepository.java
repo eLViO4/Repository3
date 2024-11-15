@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     // @Query("SELECT b FROM Basket b WHERE b.user.id = :userId")
-   Basket findByUser_Id(Long userId);
-
+    Basket findByUser_Id(Long userId);
 }
 

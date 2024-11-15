@@ -40,6 +40,7 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
+
     // Additional
     public List<Product> getProductsByCategory(Long categoryId){
          return productRepository.findByCategoryId(categoryId);

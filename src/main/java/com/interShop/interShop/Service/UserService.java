@@ -23,7 +23,7 @@ public class UserService {
 
     public void registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new IllegalArgumentException("Этот email уже зарегистрирован");
         }
         Basket newBasket = new Basket();
         newBasket.setUser(user);
@@ -31,14 +31,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-
     public User login(String email, String password) {
-        User user1 = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Email not found"));
+        User user1 = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Email не найден"));
         if (!user1.getPassword().equals(password)) {
-            throw new IllegalArgumentException("Wrong password");
+            throw new IllegalArgumentException("Неверный пароль");
         }
         return user1;
     }
+
     //void logout(Long userId);
 
 
@@ -56,19 +56,19 @@ public class UserService {
         if (user.getId() != null && userRepository.findById(user.getId()).isPresent()) {
             return userRepository.save(user);
         } else if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new IllegalArgumentException("Этот email уже зарегистрирован");
         }
         return userRepository.save(user);
     }
-
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-     // Order & Basket
+
+    // Order & Basket
     public Basket getUserBasket(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Пользователь на найден"));
         return user.getBasket();
     }
 
