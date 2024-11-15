@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,12 +16,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final BasketService basketService;
+    private final OrderItemRepository orderItemRepository;
 
-
-    @Autowired
-    public OrderService(OrderRepository orderRepository, BasketService basketService) {
+    public OrderService(OrderRepository orderRepository, BasketService basketService, OrderItemRepository orderItemRepository) {
         this.orderRepository = orderRepository;
         this.basketService = basketService;
+        this.orderItemRepository = orderItemRepository;
     }
 
     public Order saveOrder(Order order) {
@@ -30,6 +31,9 @@ public class OrderService {
 
     public Order createOrder(Long userId) {
         Basket basket = basketService.getBasketByUserId(userId);
+        if (basket.getProducts().isEmpty()) {
+            throw new RuntimeException("Корзина пуста. Невозможно создать заказ.");
+        }
 
         Order order = new Order();
         order.setUser(basket.getUser());
@@ -39,12 +43,13 @@ public class OrderService {
         double totalPrice = basketService.calculateBasketTotal(userId);
         order.setPrice(totalPrice);
 
-        Order_Item orderItem = new Order_Item();
-        orderItem.setOrder(order);
-      //  orderItem.setProduct(basket.getProduct());
-      //  orderItem.setQuantity(basket.getQuantity());
-
-        order.getOrderItems().add(orderItem);
+        for (BasketProduct basketProduct : basket.getProducts()) {
+            Order_Item orderItem = new Order_Item();
+            orderItem.setOrder(order);
+            orderItem.setProduct(basketProduct.getProduct());
+            orderItem.setQuantity(basketProduct.getQuantity());
+            order.getOrderItems().add(orderItem);
+        }
 
         orderRepository.save(order);
         basketService.clearBasket(userId);
@@ -60,6 +65,10 @@ public class OrderService {
         return order;
     }
 
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Заказ не найден"));
+    }
+
     public String getOrderStatus(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Заказ не найден с ID: " + orderId));
         return order.getStatus();
@@ -70,6 +79,23 @@ public class OrderService {
         order.setStatus(status);
         return orderRepository.save(order);
     }
+
+    public List<Order_Item> getAllOrderItems(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Заказ не найден с ID: " + orderId));
+        return order.getOrderItems();
+    }
+
+    public double getOrderPrice(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Заказ не найден с ID: " + orderId));
+        return order.getPrice();
+    }
+
+    public LocalDateTime getOrderDate(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Заказ не найден с ID: " + orderId));
+        return order.getOrderDate();
+    }
+
+
 
 }
 

@@ -1,10 +1,13 @@
 package com.interShop.interShop.Controller;
 
 import com.interShop.interShop.Entity.Order;
+import com.interShop.interShop.Entity.Order_Item;
 import com.interShop.interShop.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,15 +20,24 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-
-    @PostMapping
-    public Order createOrder(@RequestParam Long userId) {
+    @PostMapping("/create/{userId}")
+    public Order createOrder(@PathVariable Long userId) {
         return orderService.createOrder(userId);
     }
 
     @GetMapping("/user/{userId}")
     public Order getOrderByUserId(@PathVariable Long userId) {
         return orderService.getOrderByUserId(userId);
+    }
+
+    @GetMapping("/{orderId}")
+    public Order getOrderById(@PathVariable Long orderId) {
+        return orderService.getOrderById(orderId);
+    }
+
+    @GetMapping("/allProducts/{orderId}")
+    public List<Order_Item> getOrderProducts(@PathVariable Long orderId) {
+        return orderService.getAllOrderItems(orderId);
     }
 
     @GetMapping("/status/{orderId}")
@@ -36,6 +48,16 @@ public class OrderController {
     @PutMapping("/updateStatus/{orderId}")
     public Order updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
         return orderService.updateOrderStatus(orderId, status);
+    }
+
+    @GetMapping("/date/{orderId}")
+    public LocalDateTime getOrderDate(@PathVariable Long orderId) {
+        return orderService.getOrderDate(orderId);
+    }
+
+    @GetMapping("/total/{orderId}")
+    public double getOrderPrice(@PathVariable Long orderId) {
+        return orderService.getOrderPrice(orderId);
     }
 
 }
