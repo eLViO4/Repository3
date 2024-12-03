@@ -39,7 +39,7 @@ public class BasketService {
         Basket basket = basketRepository.findByUser_Id(userId);
 
         if (basket == null) {
-            throw new RuntimeException("Корзина не найдена для пользователя с ID " + userId);
+            throw new RuntimeException("Корзина пользователя с ID: " + userId +" не найдена");
         }
         return basket;
     }
@@ -47,17 +47,17 @@ public class BasketService {
     public List<BasketProduct> getUserBasket(Long userId) {
         Basket basket = basketRepository.findByUser_Id(userId);
         if (basket == null) {
-            throw new RuntimeException("Корзина не найдена для пользователя с ID " + userId);
+            throw new RuntimeException("Корзина пользователя с ID: " + userId +" не найдена");
         }
         return basket.getProducts();
     }
 
     public void addProductToBasket(Long basketId, Long productId, int quantity) {
         Basket basket = basketRepository.findById(basketId)
-                .orElseThrow(() -> new RuntimeException("Basket not found"));
+                .orElseThrow(() -> new RuntimeException("Корзина не найдена"));
 
         Product product = productService.getProductById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Товар не найден"));
 
         Optional<BasketProduct> existingProduct = basket.getProducts().stream()
                 .filter(basketProduct -> basketProduct.getProduct().equals(product))
@@ -80,15 +80,15 @@ public class BasketService {
     @Transactional
     public void removeProductFromBasket(Long basketId, Long productId) {
         Basket basket = basketRepository.findById(basketId)
-                .orElseThrow(() -> new RuntimeException("Basket not found"));
+                .orElseThrow(() -> new RuntimeException("Корзина не найдена"));
         Product product = productService.getProductById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Товар не найден"));
         Optional<BasketProduct> productToRemove = basketProductRepository.findByBasket_IdAndProduct_Id(basketId, productId);
 
         if (productToRemove.isPresent()) {
             basketProductRepository.delete(productToRemove.get());
         } else {
-            throw new RuntimeException("Product not found in basket");
+            throw new RuntimeException("Товар не найден в корзине");
         }
     }
 
@@ -104,7 +104,7 @@ public class BasketService {
     @Transactional
     public void clearBasket(Long basketId) {
         Basket basket = basketRepository.findById(basketId)
-                .orElseThrow(() -> new RuntimeException("Basket not found"));
+                .orElseThrow(() -> new RuntimeException("Корзина не найдена"));
         basketProductRepository.deleteByBasket_Id(basketId);
         basket.getProducts().clear();
         basketRepository.save(basket);

@@ -4,6 +4,7 @@ import com.interShop.interShop.Entity.*;
 import com.interShop.interShop.Repository.BasketRepository;
 import com.interShop.interShop.Repository.OrderItemRepository;
 import com.interShop.interShop.Repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,12 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-
     public Order createOrder(Long userId) {
-        // Basket basket = basketService.getBasketByUserId(userId);
-        Basket basket = basketRepository.findByUser_Id(userId);
+        System.out.println("Fetching basket for userId: " + userId);
+        Basket basket = basketService.getBasketByUserId(userId);
+        if (basket == null) {
+            throw new RuntimeException("Корзина не найдена для userId: " + userId);
+        }
         if (basket.getProducts().isEmpty()) {
             throw new RuntimeException("Корзина пуста. Невозможно создать заказ.");
         }
