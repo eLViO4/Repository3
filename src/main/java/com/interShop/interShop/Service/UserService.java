@@ -1,6 +1,7 @@
 package com.interShop.interShop.Service;
 
 import com.interShop.interShop.Entity.Basket;
+import com.interShop.interShop.Entity.BasketProduct;
 import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +68,10 @@ public class UserService {
 
 
     // Order & Basket
-    public Basket getUserBasket(Long userId) {
+    public List<BasketProduct> getUserBasket(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Пользователь на найден"));
-        return user.getBasket();
+        Basket basket = user.getBasket();
+        return basket.getProducts();
     }
 
 }

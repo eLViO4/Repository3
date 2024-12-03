@@ -1,6 +1,7 @@
 package com.interShop.interShop.Controller;
 
 import com.interShop.interShop.Entity.Basket;
+import com.interShop.interShop.Entity.BasketProduct;
 import com.interShop.interShop.Entity.User;
 import com.interShop.interShop.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ class UserController {
     }
 
     @GetMapping("/{id}/basket")
-    public Basket getBasket(@PathVariable Long id) {
+    public List<BasketProduct> getBasket(@PathVariable Long id) {
         return userService.getUserBasket(id);
     }
 }
