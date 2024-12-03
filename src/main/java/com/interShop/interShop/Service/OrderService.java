@@ -61,12 +61,8 @@ public class OrderService {
         return order;
     }
 
-    public Order getOrderByUserId(Long userId) {
-        Order order = orderRepository.findByUser_Id(userId);
-        if (order == null) {
-            throw new RuntimeException("Заказ для пользователя с ID: " + userId + " не найден");
-        }
-        return order;
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserId(userId);
     }
 
     public Order getOrderById(Long orderId) {
