@@ -2,7 +2,10 @@ package com.interShop.interShop.Service;
 
 import com.interShop.interShop.Entity.Basket;
 import com.interShop.interShop.Entity.BasketProduct;
+import com.interShop.interShop.Entity.Order;
 import com.interShop.interShop.Entity.User;
+import com.interShop.interShop.Repository.BasketRepository;
+import com.interShop.interShop.Repository.OrderRepository;
 import com.interShop.interShop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +17,14 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BasketRepository basketRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, BasketRepository basketRepository, OrderRepository orderRepository) {
         this.userRepository = repository;
+        this.basketRepository = basketRepository;
+        this.orderRepository = orderRepository;
     }
 
     // Authentication
@@ -62,9 +69,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long userId) {
+        List<Order> userOrders = orderRepository.findByUserId(userId);
+        orderRepository.deleteAll(userOrders);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Пользователь не найден"));
+        if (user.getBasket() != null) {
+            basketRepository.delete(user.getBasket());
+        }
+        userRepository.deleteById(userId);
     }
+
 
 
     // Order & Basket
